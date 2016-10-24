@@ -23,29 +23,47 @@ class AmazonAddressJp extends AmazonAddress
      */
     public function __construct(array $address, AmazonNameFactory $addressNameFactory)
     {
-        parent::__construct($address, $addressNameFactory);
-        $this->processValues();
-    }
+        $this->name = $addressNameFactory->create(['name' => $address['Name'],
+            'country' => $address['CountryCode']
+        ]);
 
-    /**
-     * @return void
-     */
-    private function processValues()
-    {
-        $line1 = (string) $this->getLine(1);
-        $line2 = (string) $this->getLine(2);
-        $line3 = (string) $this->getLine(3);
+        $this->lines = [];
+        $lines = [];
 
-        if ($this->city == '') {
-            $this->city = $line1;
-            $this->lines[] = $line2;
+        for ($i = 1; $i <= 3; $i++) {
+            $key = 'AddressLine' . $i;
 
-            if ($line3) {
-                $this->lines[] = $line3;
+            if (isset($address[$key])) {
+                if (empty($address[$key])) {
+                    $lines[$i] = '';
+                } else {
+                    $lines[$i] = $address[$key];
+                }
+            }
+        }
+
+        if(!array_key_exists('City', $address)) {
+            $this->city = $lines[1];
+            $this->lines[] = $lines[2];
+
+            if (count($lines) == 3) {
+                $this->lines[] = $lines[3];
             }
         } else {
-            $this->lines[] = $line2 . ' ' . $line3;
+            $this->city        = $address['City'];
+            $this->lines[] = $lines[1] . ' ' . $lines[2];
+            $this->lines[] = $lines[3];
+        }
+
+        $this->postCode    = $address['PostalCode'];
+        $this->countryCode = $address['CountryCode'];
+
+        if (isset($address['Phone'])) {
+            $this->telephone = $address['Phone'];
+        }
+
+        if (isset($address['StateOrRegion'])) {
+            $this->state = $address['StateOrRegion'];
         }
     }
-
 }
