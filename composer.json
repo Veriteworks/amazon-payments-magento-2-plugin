@@ -1,8 +1,8 @@
 {
-  "name": "amazon/module-login-and-pay",
+  "name": "amzn/amazon-payments-magento-2-plugin",
   "description": "Official Magento2 Plugin to integrate with Amazon Payments",
   "type": "magento2-module",
-  "version": "1.0.5",
+  "version": "1.0.9",
   "license": [
     "Apache-2.0"
   ],
@@ -19,7 +19,7 @@
     "magento/module-quote": "^100.1.0",
     "magento/module-customer": "^100.1.0",
     "magento/module-store": "^100.1.0",
-    "amzn/login-and-pay-with-amazon-sdk-php": "dev-psr_logging"
+    "amzn/login-and-pay-with-amazon-sdk-php": "^2.1.0"
   },
   "require-dev": {
     "guzzlehttp/guzzle": "^6.2.0",
